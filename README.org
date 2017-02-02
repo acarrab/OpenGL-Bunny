@@ -1,6 +1,7 @@
 * OpenGL-Bunny
 Stanford Bunny with OpenGL
 ** Contributors
+Kylon Tyner,
 Connor Kinzie,
 Ryland Bristow,
 Angelo Carrabba
