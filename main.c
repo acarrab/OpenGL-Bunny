@@ -94,6 +94,22 @@ int main(int argc, char *argv[]) {
   vd = parseFrom("bunnyN.ply");
   if (!vd) return -1;
 
+  GLfloat min[3], max[3];
+  int i, j;
+  for (j = 0; j < 3; j++) {
+    if (max[j] < vd->vertEle[0].vertice[j]) max[j] = vd->vertEle[0].vertice[j];
+    if (min[j] > vd->vertEle[0].vertice[j]) min[j] = vd->vertEle[0].vertice[j];
+  }
+  for (i = 1; i < vd->vertCount; i++) {
+    for (j = 0; j < 3; j++) {
+      if (max[j] < vd->vertEle[i].vertice[j]) max[j] = vd->vertEle[i].vertice[j];
+      if (min[j] > vd->vertEle[i].vertice[j]) min[j] = vd->vertEle[i].vertice[j];
+    }
+  }
+
+  fprintf(stdout, "min(x,y,z) = (%f,%f,%f)", min[0],min[1],min[2]);
+  fprintf(stdout, "max(x,y,z) = (%f,%f,%f)", max[0],max[1],max[2]);
+
   glutInit(&argc,argv);
   glutInitDisplayMode(GLUT_RGBA|GLUT_DEPTH|GLUT_MULTISAMPLE);
   glutInitWindowSize(768,768);
