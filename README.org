@@ -6,7 +6,9 @@ bunny show.
 Stanford Bunny with OpenGL
 
 * Our Todo list
-**
+** TODO Edit the viewing window
+** TODO Add different colors
+** TODO Add shaders for effects
 
 * Contributors
 /Kylon Tyner/,
