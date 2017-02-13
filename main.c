@@ -62,8 +62,8 @@ void draw_stuff() {
 
 void do_lights() {
   float light0_ambient[] = { 0.0, 0.0, 0.0, 0.0 };
-  float light0_diffuse[] = { 2.0, 2.0, 2.0, 0.0 };
-  float light0_specular[] = { 2.25, 2.25, 2.25, 0.0 };
+  float light0_diffuse[] = { 1.0, 1.0, 1.0, 0.0 };
+  float light0_specular[] = { 1.25, 1.25, 1.25, 0.0 };
   float light0_position[] = { 1.5, 2.0, 2.0, 1.0 };
   float light0_direction[] = { -1.5, -2.0, -2.0, 1.0};
 
