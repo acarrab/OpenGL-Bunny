@@ -16,6 +16,12 @@
 VertexData *vd;
 struct point { float x, y, z; };
 void do_viewvolume() {
+  //note that these are the max coordinates in the bunny.
+  /*
+    min(x,y,z) = (-0.094690,0.000000,-0.061874)
+    max(x,y,z) = (0.061009,0.187321,0.058800)
+  */
+
   struct point eye;
   struct point view;
   struct point up;
@@ -28,9 +34,10 @@ void do_viewvolume() {
   // specify position for view volume
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
-  eye.x = 2.0; eye.y = 2.0; eye.z = 2.0;
-  view.x = 0.0; view.y = 0.0; view.z = 0.0;
-  up.x = 0.0; up.y = 1.0; up.z = 0.0;
+  eye.x = .2; eye.y = .2; eye.z = .2;
+
+  view.x = -0.0168405; view.y = 0.0936605; view.z = -0.001537;
+  up.x = 0.0; up.y = 1; up.z = 0.0;
   gluLookAt(eye.x,eye.y,eye.z,view.x,view.y,view.z,up.x,up.y,up.z);
 }
 void draw_stuff() {
@@ -107,8 +114,9 @@ int main(int argc, char *argv[]) {
     }
   }
 
-  fprintf(stdout, "min(x,y,z) = (%f,%f,%f)", min[0],min[1],min[2]);
-  fprintf(stdout, "max(x,y,z) = (%f,%f,%f)", max[0],max[1],max[2]);
+  fprintf(stdout, "min(x,y,z) = (%f,%f,%f)\n", min[0],min[1],min[2]);
+  fprintf(stdout, "max(x,y,z) = (%f,%f,%f)\n", max[0],max[1],max[2]);
+  fflush(stdout);
 
   glutInit(&argc,argv);
   glutInitDisplayMode(GLUT_RGBA|GLUT_DEPTH|GLUT_MULTISAMPLE);
