@@ -1,9 +1,12 @@
 # OpenGL-Bunny
+* Recent Notes
+Hey guys, I wrote some code for parsing and reading in the data and making the
+bunny show.
 * OpenGL-Bunny
 Stanford Bunny with OpenGL
 
 * Our Todo list
-*** TBD
+**
 
 * Contributors
 /Kylon Tyner/,
