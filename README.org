@@ -51,10 +51,8 @@ Stanford Bunny with OpenGL
   - A user interface with selectable eye point and view direction.
 
 ** Our done list
-- DONE Parsing
-  - CLOSED: [2017-02-13 Mon 19:34]
-- DONE Basic drawStuff layout
-  - CLOSED: [2017-02-13 Mon 19:35]
+- Parsing
+- Basic drawStuff layout
 
 ** Contributors
 /Kylon Tyner/,
