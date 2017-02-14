@@ -20,9 +20,6 @@
 #include <math.h>
 
 
-
-
-
 int main(int argc, char *argv[]) {
   if (initVertexData()) return -1;
 
