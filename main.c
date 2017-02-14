@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
   glutInitDisplayMode(GLUT_RGBA|GLUT_DEPTH|GLUT_MULTISAMPLE);
   glutInitWindowSize(768,768);
   glutInitWindowPosition(100,50);
-  glutCreateWindow("my_cool_cube");
+  glutCreateWindow("Bunny");
   do_viewvolume();
   do_lights();
   do_material();
