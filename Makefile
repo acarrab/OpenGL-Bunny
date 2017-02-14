@@ -6,7 +6,7 @@ CXXFLAGS= -Wall
 LDFLAGS = -lX11 -lGL -lGLU -lglut -lm -lXmu -lXi -lm
 # objects that will be generated
 OBJS = \
-	main.o drawStuff.o lighting.o material.o parser.o
+	main.o drawStuff.o lighting.o material.o parser.o viewVolume.o
 # the executable to create
 EXEC = run
 
@@ -20,7 +20,7 @@ EXEC = run
 $(EXEC): $(OBJS)
 	$(CXX) $(CXXFLAGS) -o $@ $(OBJS) $(LDFLAGS)
 
-main.o: main.c parser.h lighting.h material.h drawStuff.h
+main.o: main.c parser.h lighting.h material.h drawStuff.h viewVolume.h
 
 clean:
 	rm -rf $(OBJS)
