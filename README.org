@@ -35,6 +35,11 @@ rm -rf run
 * OpenGL-Bunny
 Stanford Bunny with OpenGL
 
+
+Here is the current bunny.
+[[currentBunny.png]]
+
+
 ** Our Todo list
 - Change lighting and colors to be used
   - This is to be done in lighting.c
