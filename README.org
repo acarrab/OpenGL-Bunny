@@ -1,4 +1,5 @@
 # OpenGL-Bunny
+# This is written in a markup language called org mode.
 * Recent Notes
 Hey guys, I wrote some code for parsing and reading in the data and making the
 bunny show. Also split up the program into different files so we can all work on
