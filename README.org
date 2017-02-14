@@ -7,7 +7,7 @@ different things at the same time without interfering with each other.
 Also, I added a Makefile. In order to run just type
 
 #+BEGIN_SRC python
-Compy:~/Desktop/OpenGL-Bunny$ make
+Compy:~/Desktop/OpenGL-Bunny# make
 gcc -L/usr/lib64 -O2 -Wall -c main.c -o main.o
 gcc -L/usr/lib64 -O2 -Wall -c drawStuff.c -o drawStuff.o
 gcc -L/usr/lib64 -O2 -Wall -c lighting.c -o lighting.o
@@ -16,7 +16,7 @@ gcc -L/usr/lib64 -O2 -Wall -c parser.c -o parser.o
 gcc -L/usr/lib64 -O2 -Wall -c viewVolume.c -o viewVolume.o
 gcc -L/usr/lib64 -O2 -Wall -o run main.o drawStuff.o lighting.o material.o parser.o viewVolume.o -lX11 -lGL -lGLU -lglut -lm -lXmu -lXi -lm
 
-Compy:~/Desktop/OpenGL-Bunny$ ./run
+Compy:~/Desktop/OpenGL-Bunny# ./run
 min(x,y,z) = (-0.094690,0.000000,-0.061874)
 max(x,y,z) = (0.061009,0.187321,0.058800)
 #+END_SRC
@@ -25,7 +25,7 @@ The min and max x,y,z values are just showing the position of the bunny in 3d sp
 Also, please run make clean before committing changes
 
 #+BEGIN_SRC python
-Compy:~/Desktop/OpenGL-Bunny$ make clean
+Compy:~/Desktop/OpenGL-Bunny# make clean
 rm -rf main.o drawStuff.o lighting.o material.o parser.o viewVolume.o
 rm -rf run
 #+END_SRC
