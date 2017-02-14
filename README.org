@@ -7,8 +7,8 @@ different things at the same time without interfering with each other.
 Also, I added a Makefile. In order to run just type
 
 #+BEGIN_SRC bash
-make
-./run
+$ make
+$ ./run
 #+END_SRC
 
 * OpenGL-Bunny
