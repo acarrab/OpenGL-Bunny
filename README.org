@@ -35,16 +35,15 @@ rm -rf run
 Stanford Bunny with OpenGL
 
 ** Our Todo list
-**** TODO Change lighting and colors to be used
-     This is to be done in lighting.c
-**** TODO Change material, things like shininess.
-     To be done in material.c
-**** TODO Fix the view volumes up direction
-     To be done in viewVolume.c
-**** TODO Maybe apply transform to bunny to rotate to a better viewing angle
-     To be done in drawStuff.c
-
-***** We must implement one of the following features as well.
+- Change lighting and colors to be used
+  - This is to be done in lighting.c
+- Change material, things like shininess.
+  - To be done in material.c
+- Fix the view volumes up direction
+  - To be done in viewVolume.c
+- Maybe apply transform to bunny to rotate to a better viewing angle
+  - To be done in drawStuff.c
+- We must implement one of the following features as well.
   - Motion-blur
   - Depth of Field
   - Textures
@@ -52,10 +51,10 @@ Stanford Bunny with OpenGL
   - A user interface with selectable eye point and view direction.
 
 ** Our done list
-**** DONE Parsing
-     CLOSED: [2017-02-13 Mon 19:34]
-**** DONE Basic drawStuff layout
-     CLOSED: [2017-02-13 Mon 19:35]
+- DONE Parsing
+  - CLOSED: [2017-02-13 Mon 19:34]
+- DONE Basic drawStuff layout
+  - CLOSED: [2017-02-13 Mon 19:35]
 
 ** Contributors
 /Kylon Tyner/,
