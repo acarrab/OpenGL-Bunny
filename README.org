@@ -36,9 +36,6 @@ rm -rf run
 Stanford Bunny with OpenGL
 
 
-Here is the current bunny.
-#+ATTR_HTML: width="60%"
-[[currentBunny.png]]
 
 
 ** Our Todo list
@@ -66,3 +63,7 @@ Here is the current bunny.
 /Connor Kinzie/,
 /Ryland Bristow/,
 /Angelo Carrabba/
+
+
+** Here is the current bunny.
+*** [[currentBunny.png][Bunny Image]]
