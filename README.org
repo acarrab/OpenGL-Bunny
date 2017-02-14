@@ -37,7 +37,7 @@ Stanford Bunny with OpenGL
 
 
 Here is the current bunny.
-#+ATTR_ORG: width="60%"
+#+ATTR_HTML: width="60%"
 [[currentBunny.png]]
 
 
