@@ -7,9 +7,9 @@ different things at the same time without interfering with each other.
 Stanford Bunny with OpenGL
 
 * Our Todo list
-** TODO change lighting and colors to be used
+** TODO Change lighting and colors to be used
    This is to be done in lighting.c
-** TODO change material, things like shininess.
+** TODO Change material, things like shininess.
    To be done in material.c
 ** TODO Fix the view volumes up direction
    To be done in viewVolume.c
@@ -23,10 +23,10 @@ Stanford Bunny with OpenGL
 - Shadows
 - A user interface with selectable eye point and view direction.
 
-* Our done list]
+* Our done list
 ** DONE Parsing
    CLOSED: [2017-02-13 Mon 19:34]
-** DONE basic drawStuff layout
+** DONE Basic drawStuff layout
    CLOSED: [2017-02-13 Mon 19:35]
 
 * Contributors
