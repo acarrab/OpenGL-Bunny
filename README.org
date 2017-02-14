@@ -3,6 +3,14 @@
 Hey guys, I wrote some code for parsing and reading in the data and making the
 bunny show. Also split up the program into different files so we can all work on
 different things at the same time without interfering with each other.
+
+Also, I added a Makefile. In order to run just type
+
+#+BEGIN_SRC bash
+make
+./run
+#+END_SRC
+
 * OpenGL-Bunny
 Stanford Bunny with OpenGL
 
