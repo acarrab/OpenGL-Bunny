@@ -11,6 +11,7 @@
 #include <GL/glext.h>
 #include <unistd.h>
 #include "parser.h"
+#include "shader.h"
 
 
 
@@ -71,11 +72,11 @@ void update()
 
 void do_lights()
 {
-  // This is a white light.
+  // Key light
   float light0_ambient[] = { 0.0, 0.0, 0.0, 0.0 };
-  float light0_diffuse[] = { .8, .8, .8, 0.0 };
-  float light0_specular[] = { .5, .5, .5, 0.0 };
-  float light0_position[] = { 1.5, 2.0, 2.0, 1.0 };
+  float light0_diffuse[] = { 0.0, 1.0, 1.0, 0.0 };
+  float light0_specular[] = { 1.0, 0.0, 1.0, 0.0 };
+  float light0_position[] = { 0.5, 2.0, 0.5, 1.0 };
   float light0_direction[] = { -1.5, -2.0, -2.0, 1.0};
 
   // Turn off scene default ambient.
@@ -97,14 +98,41 @@ void do_lights()
 
   glEnable(GL_LIGHTING);
   glEnable(GL_LIGHT0);
+
+	// Back light
+	float light1_ambient[] = { 0.0, 0.0, 0.0, 0.0 };
+  float light1_diffuse[] = { 0.0, .8, .8, 0.0 };
+  float light1_specular[] = { 1.0, 1.0, 1.0, 0.0 };
+  float light1_position[] = { -0.5, 2.0, -0.5, 1.0 };
+  float light1_direction[] = { 0.5, -2.0, 0.5, 1.0};
+
+  // Turn off scene default ambient.
+  glLightModelfv(GL_LIGHT_MODEL_AMBIENT,light1_ambient);
+
+  // Make specular correct for spots.
+  glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER,1);
+
+  glLightfv(GL_LIGHT1,GL_AMBIENT,light1_ambient);
+  glLightfv(GL_LIGHT1,GL_DIFFUSE,light1_diffuse);
+  glLightfv(GL_LIGHT1,GL_SPECULAR,light1_specular);
+  glLightf(GL_LIGHT1,GL_SPOT_EXPONENT,1.0);
+  glLightf(GL_LIGHT1,GL_SPOT_CUTOFF,180.0);
+  glLightf(GL_LIGHT1,GL_CONSTANT_ATTENUATION,0.5);
+  glLightf(GL_LIGHT1,GL_LINEAR_ATTENUATION,0.1);
+  glLightf(GL_LIGHT1,GL_QUADRATIC_ATTENUATION,0.01);
+  glLightfv(GL_LIGHT1,GL_POSITION,light1_position);
+  glLightfv(GL_LIGHT1,GL_SPOT_DIRECTION,light1_direction);
+
+  glEnable(GL_LIGHTING);
+  glEnable(GL_LIGHT1);
 }
 
 void do_material()
 {
   float mat_ambient[] = {1.0,1.0,1.0,1.0};
-  float mat_diffuse[] = {0.9,0.9,0.1,1.0};
-  float mat_specular[] = {1.0,1.0,1.0,1.0};
-  float mat_shininess[] = {2.0};
+  float mat_diffuse[] = {0.9,0.9,0.9,1.0};
+  float mat_specular[] = {0.7,0.7,0.7,1.0};
+  float mat_shininess[] = {15.0};
 
   glMaterialfv(GL_FRONT,GL_AMBIENT,mat_ambient);
   glMaterialfv(GL_FRONT,GL_DIFFUSE,mat_diffuse);
@@ -117,7 +145,7 @@ int mybuf = 1;
 void initOGL(int argc, char **argv)
 {
 
-  //###gets the parsed data from bunnyN.ply, as specified in parse.h
+  //###gets the parsed data from bunnyN.ply, as specified in parser.h
   VertexData *vd = parseFrom("bunnyN.ply");
   if (!vd) {
     printf("The parse failed\n");
@@ -181,8 +209,19 @@ void getout(unsigned char key, int x, int y) {
   }
 }
 
+void do_shaders() {
+	ShaderProgram *program;
+	program->vertexShaderName = "phong.vert";
+	program->fragmentShaderName = "phong.frag";\
+	// This is here in case we need to access the program's ID again
+	program->programID = loadShaders(program);
+
+	loadVariables(program);
+}
+
 int main(int argc, char **argv) {
   initOGL(argc,argv);
+  do_shaders();
   glutDisplayFunc(draw_stuff);
   glutIdleFunc(update);
   glutKeyboardFunc(getout);

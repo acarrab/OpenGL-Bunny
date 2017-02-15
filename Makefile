@@ -6,7 +6,7 @@ CXXFLAGS= -g
 LDFLAGS = -lX11 -lGL -lGLU -lGLEW -lglut -lm -lXmu -lXi
 # objects that will be generated
 OBJS = \
-	driver.o parser.o
+	driver.o parser.o shader.o
 # the executable to create
 EXEC = run
 
@@ -20,7 +20,7 @@ EXEC = run
 $(EXEC): $(OBJS)
 	$(CXX) $(CXXFLAGS) -o $@ $(OBJS) $(LDFLAGS)
 
-driver.o: driver.c parser.h
+driver.o: driver.c parser.h shader.h
 
 clean:
 	rm -rf $(OBJS)
