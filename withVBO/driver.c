@@ -5,7 +5,9 @@
 
 #include <stdio.h>
 #include <GL/gl.h>
+//#include <GL/glew.h>
 #include <GL/glut.h>
+#include <unistd.h>
 #include "parser.h"
 
 
@@ -125,29 +127,25 @@ void initOGL(int argc, char **argv)
     printf("The parse failed\n");
     exit(-1);
   }
-  GLfloat *vertexData = (GLfloat*)malloc(sizeof(GLfloat) * vd->faceCount*3*3*2);
-  int x = 0;
-  int y = 0;
-  int i,j,k;
-  for (i = 0; i < vd->faceCount; i++) {
+  int totalTriangles = vd->faceCount;
+  int totalVertices = totalTriangles * 3;
+  int totalPointVals = totalVertices * 3;
+  int dataSize = totalPointVals * 2; //because of normals.
+
+  GLfloat *vertexData = (GLfloat*)malloc(sizeof(GLfloat)*dataSize);
+  int x = 0, y = totalPointVals, i, j, k;
+
+  for (i = 0; i < totalTriangles; i++) {
     for(j = 0; j < 3; j++) {
       VertexElement *e = &(vd->vertEle[vd->faceEle[i].indice[j]]);
       for (k = 0; k < 3; k++) {
         vertexData[x++] = e->vertice[k];
+        vertexData[y++] = e->normal[k];
       }
     }
   }
-  y = x;
-  for (i = 0; i < vd->faceCount; i++) {
-    for(j = 0; j < 3; j++) {
-      VertexElement *e = &(vd->vertEle[vd->faceEle[i].indice[j]]);
-      for (k = 0; k < 3; k++) {
-        vertexData[y++] = e->vertice[k];
-      }
-    }
-  }
-  int count = y;
-  vertexCount = x/3;
+  vertexCount = totalVertices;
+  printf("%d, %d, %d\n", x, y, y - x);
 
   glutInit(&argc,argv);
   glutInitDisplayMode(GLUT_RGBA|GLUT_DEPTH|GLUT_DOUBLE);
@@ -158,11 +156,11 @@ void initOGL(int argc, char **argv)
   do_lights();
   do_material();
   glBindBuffer(GL_ARRAY_BUFFER,mybuf);
-  glBufferData(GL_ARRAY_BUFFER,sizeof(GLfloat)*count,vertexData,GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER,sizeof(GLfloat)*dataSize,vertexData,GL_STATIC_DRAW);
   // When using VBOs, the final arg is a byte offset in buffer, not the address,
   // but gl<whatever>Pointer still expects an address type, hence the NULL.
   glVertexPointer(3,GL_FLOAT,3*sizeof(GLfloat),NULL+0);
-  glNormalPointer(GL_FLOAT,3*sizeof(GLfloat),NULL+vd->faceCount*3*sizeof(GLfloat));
+  glNormalPointer(GL_FLOAT,3*sizeof(GLfloat),NULL+totalPointVals*sizeof(GLfloat));
   glEnableClientState(GL_VERTEX_ARRAY);
   glEnableClientState(GL_NORMAL_ARRAY);
   glClearColor(0.35,0.35,0.35,0.0);
