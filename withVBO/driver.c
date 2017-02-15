@@ -37,29 +37,17 @@ void setup_the_viewvol()
 
   eye.x = .2; eye.y = .2; eye.z = .2;
   //eye.x = 2.0; eye.y = 2.0; eye.z = 2.0;
-  view.x = -0.0168405; view.y = 0.0936605; view.z = -0.001537;
+  view.x = 0/*-0.00508405*/; view.y = 0.0936605; view.z = -0.001537;
   //view.x = 0.0; view.y = 0.0; view.z = 0.0;
   up.x = 0.0; up.y = 1.0; up.z = 0.0;
 
   gluLookAt(eye.x,eye.y,eye.z,view.x,view.y,view.z,up.x,up.y,up.z);
 }
 
-// This is the downside of VBOs: we must specify 24 vertices and 24 normals.
-// All the data must go in one giant buffer.
-GLfloat vertices[] = {
-  0.0,0.0,0.0, 0.0,1.0,0.0, 1.0,1.0,0.0, 1.0,0.0,0.0, 0.0,0.0,0.0, 0.0,0.0,1.0,
-  1.0,0.0,1.0, 1.0,0.0,0.0, 0.0,0.0,0.0, 0.0,0.0,1.0, 0.0,1.0,1.0, 0.0,1.0,0.0,
-  0.0,0.0,1.0, 0.0,1.0,1.0, 1.0,1.0,1.0, 1.0,0.0,1.0, 0.0,1.0,0.0, 0.0,1.0,1.0,
-  1.0,1.0,1.0, 1.0,1.0,0.0, 1.0,0.0,0.0, 1.0,0.0,1.0, 1.0,1.0,1.0, 1.0,1.0,0.0,
-  // normals[] =
-  0.0,0.0,-1.0, 0.0,0.0,-1.0,0.0,0.0,-1.0,0.0,0.0,-1.0,0.0,-1.0,0.0,0.0,-1.0,0.0,
-  0.0,-1.0,0.0, 0.0,-1.0,0.0,-1.0,0.0,0.0,-1.0,0.0,0.0,-1.0,0.0,0.0,-1.0,0.0,0.0,
-  0.0,0.0,1.0, 0.0,0.0,1.0, 0.0,0.0,1.0, 0.0,0.0,1.0, 0.0,1.0,0.0, 0.0,1.0,0.0,
-  0.0,1.0,0.0, 0.0,1.0,0.0, 1.0,0.0,0.0, 1.0,0.0,0.0, 1.0,0.0,0.0, 1.0,0.0,0.0,
-};
 int vertexCount;
 void draw_stuff()
 {
+  glEnable(GL_MULTISAMPLE);
   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
   // 0 is starting index in the array; 24 is number of indices to be rendered
   glDrawArrays(GL_TRIANGLES,0,vertexCount);
@@ -69,9 +57,9 @@ void draw_stuff()
 void update()
 {
   usleep(10000);
-  //glTranslatef(0.5,0.0,0.5);
-  //glRotatef(1.0,0.0,1.0,0.0);
-  //glTranslatef(-0.5,0.0,-0.5);
+  glTranslatef(-0.01684,0.0,-0.00153);
+  glRotatef(.5,0.0,.1,0.0);
+  glTranslatef(0.01684,0.0,0.00153);
   glutPostRedisplay();
 }
 
@@ -79,8 +67,8 @@ void do_lights()
 {
   // This is a white light.
   float light0_ambient[] = { 0.0, 0.0, 0.0, 0.0 };
-  float light0_diffuse[] = { 1.0, 1.0, 1.0, 0.0 };
-  float light0_specular[] = { 1.0, 1.0, 1.0, 0.0 };
+  float light0_diffuse[] = { .8, .8, .8, 0.0 };
+  float light0_specular[] = { .5, .5, .5, 0.0 };
   float light0_position[] = { 1.5, 2.0, 2.0, 1.0 };
   float light0_direction[] = { -1.5, -2.0, -2.0, 1.0};
 
