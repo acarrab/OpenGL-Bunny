@@ -6,6 +6,9 @@
 #include <stdio.h>
 #include <GL/gl.h>
 #include <GL/glut.h>
+#include <GL/glx.h>
+#include <GL/glu.h>
+#include <GL/glext.h>
 #include <unistd.h>
 #include "parser.h"
 
@@ -150,7 +153,7 @@ void initOGL(int argc, char **argv)
 
 
   glutInit(&argc,argv);
-  glutInitDisplayMode(GLUT_RGBA|GLUT_DEPTH|GLUT_DOUBLE);
+  glutInitDisplayMode(GLUT_RGBA|GLUT_DEPTH|GLUT_DOUBLE|GLUT_MULTISAMPLE);
   glutInitWindowSize(768,768);
   glutInitWindowPosition(100,50);
   glutCreateWindow("Hopefully a bunny");
