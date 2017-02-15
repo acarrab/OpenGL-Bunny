@@ -5,7 +5,6 @@
 
 #include <stdio.h>
 #include <GL/gl.h>
-//#include <GL/glew.h>
 #include <GL/glut.h>
 #include <unistd.h>
 #include "parser.h"
@@ -35,10 +34,10 @@ void setup_the_viewvol()
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
 
+
+  //### These are more appropriate for looking at the bunny.
   eye.x = .2; eye.y = .2; eye.z = .2;
-  //eye.x = 2.0; eye.y = 2.0; eye.z = 2.0;
-  view.x = 0/*-0.00508405*/; view.y = 0.0936605; view.z = -0.001537;
-  //view.x = 0.0; view.y = 0.0; view.z = 0.0;
+  view.x = 0; view.y = 0.0936605; view.z = 0;
   up.x = 0.0; up.y = 1.0; up.z = 0.0;
 
   gluLookAt(eye.x,eye.y,eye.z,view.x,view.y,view.z,up.x,up.y,up.z);
@@ -57,8 +56,12 @@ void draw_stuff()
 void update()
 {
   usleep(10000);
+  //### This translates the focus to the center of the bunny. Or at least the
+  //### average of the min and max for the x and z values.
   glTranslatef(-0.01684,0.0,-0.00153);
+  //### we then rotate the bunny once we are there.
   glRotatef(.5,0.0,.1,0.0);
+  //### we then have to go back to where we were for the camera and stuff
   glTranslatef(0.01684,0.0,0.00153);
   glutPostRedisplay();
 }
@@ -110,19 +113,27 @@ int mybuf = 1;
 
 void initOGL(int argc, char **argv)
 {
+
+  //###gets the parsed data from bunnyN.ply, as specified in parse.h
   VertexData *vd = parseFrom("bunnyN.ply");
   if (!vd) {
     printf("The parse failed\n");
     exit(-1);
   }
+  //### total triangles is equal to faceCount
   int totalTriangles = vd->faceCount;
+  // total points, 3 per triangle
   int totalVertices = totalTriangles * 3;
+  //### total floats, 3 per xyz
   int totalPointVals = totalVertices * 3;
+  //### total size of our vertexData array
   int dataSize = totalPointVals * 2; //because of normals.
 
   GLfloat *vertexData = (GLfloat*)malloc(sizeof(GLfloat)*dataSize);
+  //### y starts at the half way point in the vertexData array
   int x = 0, y = totalPointVals, i, j, k;
 
+  //### populating the array
   for (i = 0; i < totalTriangles; i++) {
     for(j = 0; j < 3; j++) {
       VertexElement *e = &(vd->vertEle[vd->faceEle[i].indice[j]]);
@@ -132,8 +143,11 @@ void initOGL(int argc, char **argv)
       }
     }
   }
+  //### this sets the amount of vertices that will be rendered
   vertexCount = totalVertices;
-  printf("%d, %d, %d\n", x, y, y - x);
+
+
+
 
   glutInit(&argc,argv);
   glutInitDisplayMode(GLUT_RGBA|GLUT_DEPTH|GLUT_DOUBLE);
