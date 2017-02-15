@@ -16,12 +16,8 @@ The makefile is pretty much the same still
 #+BEGIN_SRC python
 Compy:~/Desktop/OpenGL-Bunny[0] make
 Compy:~/Desktop/OpenGL-Bunny[1] ./run
-#+END_SRC
 
-The min and max x,y,z values are just showing the position of the bunny in 3d space.
-Also, please run make clean before committing changes
 
-#+BEGIN_SRC python
 Compy:~/Desktop/OpenGL-Bunny[2] make clean
 rm -rf driver.o parser.o
 rm -rf run
@@ -33,13 +29,7 @@ Stanford Bunny with OpenGL
 
 ** Our Todo list
 - Change lighting and colors to be used
-  - This is to be done in lighting.c
-- Change material, things like shininess.
-  - To be done in material.c
-- Fix the view volumes up direction
-  - To be done in viewVolume.c
-- Maybe apply transform to bunny to rotate to a better viewing angle
-  - To be done in drawStuff.c
+- Fix up direction
 - We must implement one of the following features as well.
   - Motion-blur
   - Depth of Field
@@ -50,6 +40,9 @@ Stanford Bunny with OpenGL
 ** Our done list
 - Parsing
 - Basic drawStuff layout
+- Maybe apply transform to bunny to rotate to a better viewing angle
+- Fix the view volumes
+- Change material, things like shininess.
 
 ** Contributors
 /Kylon Tyner/,
