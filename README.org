@@ -8,22 +8,21 @@ declaration warnings and got rid of them with some #defines. Apparently there
 are some standard practices for opengl which require you to do that to avoid
 errors.
 
-It also now rotates, similarly to his rotating cube example. We can now see what
-we are doing a bit easier. There are also some comments to show what I changed
-in the code. The comments are marked with ### to distinguish my comments from
-Dr. Geists.
-
-
-The makefile is pretty much the same still
-
+There is a makefile so to run just do this stuff.
 #+BEGIN_SRC python
 Compy:~/Desktop/OpenGL-Bunny[0] make
+gcc -I/usr/include -I/usr/X11R6/include -L/usr/lib -L/usr/X11R6/lib -L/usr/lib64 -O0 -g -c driver.c -o driver.o
+gcc -I/usr/include -I/usr/X11R6/include -L/usr/lib -L/usr/X11R6/lib -L/usr/lib64 -O0 -g -c parser.c -o parser.o
+gcc -I/usr/include -I/usr/X11R6/include -L/usr/lib -L/usr/X11R6/lib -L/usr/lib64 -O0 -g -c shader.c -o shader.o
+gcc -I/usr/include -I/usr/X11R6/include -L/usr/lib -L/usr/X11R6/lib -L/usr/lib64 -O0 -g -c texturing.c -o texturing.o
+gcc -I/usr/include -I/usr/X11R6/include -L/usr/lib -L/usr/X11R6/lib -L/usr/lib64 -O0 -g -c bunny.c -o bunny.o
+gcc -I/usr/include -I/usr/X11R6/include -L/usr/lib -L/usr/X11R6/lib -L/usr/lib64 -O0 -g -o run driver.o parser.o shader.o texturing.o bunny.o -lX11 -lGL -lGLU -lGLEW -lglut -lm -lXmu -lXi
 Compy:~/Desktop/OpenGL-Bunny[1] ./run
 
-
 Compy:~/Desktop/OpenGL-Bunny[2] make clean
-rm -rf driver.o parser.o
+rm -rf driver.o parser.o shader.o texturing.o bunny.o
 rm -rf run
+
 #+END_SRC
 
 
