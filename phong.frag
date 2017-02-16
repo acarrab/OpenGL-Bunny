@@ -1,3 +1,5 @@
+
+
 varying vec3 ec_vnormal, ec_vposition;
 
 void main()
@@ -12,13 +14,13 @@ void main()
 	// END TEMPORARY
 
 	vec3 P, N, L, V, H;
-//	vec4 diffuse1 = gl_FrontMaterial.diffuse * gl_LightSource[0].diffuse; 
+//	vec4 diffuse1 = gl_FrontMaterial.diffuse * gl_LightSource[0].diffuse;
 //	vec4 diffuse2 = gl_FrontMaterial.diffuse * gl_LightSource[1].diffuse;
 //	vec4 specular1 = gl_FrontMaterial.specular * gl_LightSource[0].specular;
 //	vec4 specular2 = gl_FrontMaterial.specular * gl_LightSource[1].specular;
 
 	// TEMPORARY
-	vec4 diffuse1 = gl_FrontMaterial.diffuse * dif1; 
+	vec4 diffuse1 = gl_FrontMaterial.diffuse * dif1;
 	vec4 diffuse2 = gl_FrontMaterial.diffuse * dif2;
 	vec4 specular1 = gl_FrontMaterial.specular * spec1;
 	vec4 specular2 = gl_FrontMaterial.specular * spec2;
@@ -31,7 +33,7 @@ void main()
 	L = normalize(gl_LightSource[0].position - P);
 	V = normalize(-P);				// eye position is (0,0,0)!
 	H = normalize(L+V);
-	
+
 	diffuse1 *= max(dot(N,L),0.0);
 	specular1 *= ((shininess+2.0)/(8.0*pi))*pow(max(dot(H,N),0.0),shininess);
 

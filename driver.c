@@ -1,77 +1,50 @@
-//
-// This is a demo of vertex arrays (and normal arrays) using VBOs.
-// It uses glDrawArrays to zap the entire image to the FB in one call.
-//
-
-#include <stdio.h>
+//gets rid of implicit declaration problems or at least some of them
+#define GL_GLEXT_PROTOTYPES 1
+#define GL3_PROTOTYPES 1
 #include <GL/gl.h>
+#include <GL/glu.h>
 #include <GL/glut.h>
 #include <GL/glx.h>
-#include <GL/glu.h>
 #include <GL/glext.h>
+#include <stdio.h>
 #include <unistd.h>
-#include "parser.h"
+#include <string.h>
+#include <fcntl.h>
 #include "shader.h"
+#include "texturing.h"
+#include "bunny.h"
 
 
 
-struct point {
-  float x;
-  float y;
-  float z;
-};
+//Global variables
+GLuint bunnyPointer;
+GLuint bunnyVertices;
+GLuint shaderProgramId;
 
-void setup_the_viewvol()
-{
-  struct point eye;
-  struct point view;
-  struct point up;
+//simple error printing function
+int pterr(int returnValue, const char *message) {
+  fprintf(stderr, "%s\n", message);
+  return returnValue;
+}
 
+int createViewVolume() {
   glEnable(GL_DEPTH_TEST);
 
-  // Specify the size and shape of the view volume.
+  // Specify shape and size of the view volume.
   glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
-  gluPerspective(45.0,1.0,0.1,20.0);
+  glLoadIdentity(); //load identity matrix into GL_PROJECTION
+  gluPerspective(45.0, 1.0, 0.1, 20.0);
 
-  // Specify the position for the view volume.
+  // Specify the position for the view volume
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
-
-
-  //### These are more appropriate for looking at the bunny.
-  eye.x = .2; eye.y = .2; eye.z = .2;
-  view.x = 0; view.y = 0.0936605; view.z = 0;
-  up.x = 0.0; up.y = 1.0; up.z = 0.0;
-
-  gluLookAt(eye.x,eye.y,eye.z,view.x,view.y,view.z,up.x,up.y,up.z);
+  gluLookAt(0.2, 0.2, 0.2,  // eye xyz,
+            0.0, .0937, 0,  // view xyz,
+            0.0, 1.0, 0.0); // up xyz
+  return 0;
 }
 
-int vertexCount;
-void draw_stuff()
-{
-  glEnable(GL_MULTISAMPLE);
-  glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-  // 0 is starting index in the array; 24 is number of indices to be rendered
-  glDrawArrays(GL_TRIANGLES,0,vertexCount);
-  glutSwapBuffers();
-}
-
-void update()
-{
-  usleep(10000);
-  //### This translates the focus to the center of the bunny. Or at least the
-  //### average of the min and max for the x and z values.
-  glTranslatef(-0.01684,0.0,-0.00153);
-  //### we then rotate the bunny once we are there.
-  glRotatef(.5,0.0,.1,0.0);
-  //### we then have to go back to where we were for the camera and stuff
-  glTranslatef(0.01684,0.0,0.00153);
-  glutPostRedisplay();
-}
-
-void do_lights()
-{
+int createLights() {
   // Key light
   float light0_ambient[] = { 0.0, 0.0, 0.0, 0.0 };
   float light0_diffuse[] = { 0.0, 1.0, 1.0, 0.0 };
@@ -125,10 +98,11 @@ void do_lights()
 
   glEnable(GL_LIGHTING);
   glEnable(GL_LIGHT1);
+
+  return 0;
 }
 
-void do_material()
-{
+int createMaterials() {
   float mat_ambient[] = {1.0,1.0,1.0,1.0};
   float mat_diffuse[] = {0.9,0.9,0.9,1.0};
   float mat_specular[] = {0.7,0.7,0.7,1.0};
@@ -138,93 +112,95 @@ void do_material()
   glMaterialfv(GL_FRONT,GL_DIFFUSE,mat_diffuse);
   glMaterialfv(GL_FRONT,GL_SPECULAR,mat_specular);
   glMaterialfv(GL_FRONT,GL_SHININESS,mat_shininess);
+  return 0;
 }
 
-int mybuf = 1;
+int createShaders() {
+	ShaderProgram *program = (ShaderProgram *)malloc(sizeof(ShaderProgram));
 
-void initOGL(int argc, char **argv)
-{
-
-  //###gets the parsed data from bunnyN.ply, as specified in parser.h
-  VertexData *vd = parseFrom("bunnyN.ply");
-  if (!vd) {
-    printf("The parse failed\n");
-    exit(-1);
-  }
-  //### total triangles is equal to faceCount
-  int totalTriangles = vd->faceCount;
-  // total points, 3 per triangle
-  int totalVertices = totalTriangles * 3;
-  //### total floats, 3 per xyz
-  int totalPointVals = totalVertices * 3;
-  //### total size of our vertexData array
-  int dataSize = totalPointVals * 2; //because of normals.
-
-  GLfloat *vertexData = (GLfloat*)malloc(sizeof(GLfloat)*dataSize);
-  //### y starts at the half way point in the vertexData array
-  int x = 0, y = totalPointVals, i, j, k;
-
-  //### populating the array
-  for (i = 0; i < totalTriangles; i++) {
-    for(j = 0; j < 3; j++) {
-      VertexElement *e = &(vd->vertEle[vd->faceEle[i].indice[j]]);
-      for (k = 0; k < 3; k++) {
-        vertexData[x++] = e->vertice[k];
-        vertexData[y++] = e->normal[k];
-      }
-    }
-  }
-  //### this sets the amount of vertices that will be rendered
-  vertexCount = totalVertices;
-
-
-
-
-  glutInit(&argc,argv);
-  glutInitDisplayMode(GLUT_RGBA|GLUT_DEPTH|GLUT_DOUBLE|GLUT_MULTISAMPLE);
-  glutInitWindowSize(768,768);
-  glutInitWindowPosition(100,50);
-  glutCreateWindow("Hopefully a bunny");
-  setup_the_viewvol();
-  do_lights();
-  do_material();
-  glBindBuffer(GL_ARRAY_BUFFER,mybuf);
-  glBufferData(GL_ARRAY_BUFFER,sizeof(GLfloat)*dataSize,vertexData,GL_STATIC_DRAW);
-  // When using VBOs, the final arg is a byte offset in buffer, not the address,
-  // but gl<whatever>Pointer still expects an address type, hence the NULL.
-  glVertexPointer(3,GL_FLOAT,3*sizeof(GLfloat),NULL+0);
-  glNormalPointer(GL_FLOAT,3*sizeof(GLfloat),NULL+totalPointVals*sizeof(GLfloat));
-  glEnableClientState(GL_VERTEX_ARRAY);
-  glEnableClientState(GL_NORMAL_ARRAY);
-  glClearColor(0.35,0.35,0.35,0.0);
+	program->vertexShaderName = "phong.vert";
+	program->fragmentShaderName = "phong.frag";
+	// This is here in case we need to access the program's ID again
+	program->programID = loadShaders(program);
+	loadVariables(program);
+  shaderProgramId = program->programID;
+  return 0;
 }
-
-void getout(unsigned char key, int x, int y) {
+int createTextures() {
+  loadTexture("space.ppm");
+  int location = glGetUniformLocation(shaderProgramId, "mytexture");
+  glUniform1i(location,0);
+  return 0;
+}
+//where the magic happens
+void displayHandler() {
+  glClearColor(0.1, 0.1, 0.4, 1.0);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  //Texture addition
+  /*
+  glActiveTexture(GL_TEXTURE0);
+  glBindTexture(GL_TEXTURE_2D, 1);
+  glTranslatef(-0.1,0.0,0);
+  glutSolidTeapot(.01);
+  glTranslatef(0.1,0.0,0);*/
+  glDrawArrays(GL_TRIANGLES, 0, bunnyVertices);
+  glutSwapBuffers();
+}
+//where the spinning happens
+void idleHandler() {
+  usleep(10000);
+  //translates to center of bunny, then rotates the bunny, then goes back to
+  //where we were
+  glTranslatef(-0.01684,0.0,-0.00153);
+  glRotatef(.5,0.0,.1,0.0);
+  glTranslatef(0.01684,0.0,0.00153);
+  glutPostRedisplay();
+}
+void keyboardHandler(unsigned char key, int x, int y) {
   switch(key) {
   case 'q':
-    glDeleteBuffers(1,&mybuf);
+    glDeleteBuffers(1,&bunnyPointer);
     exit(1);
   default:
     break;
   }
 }
+int init(int argc, char *argv[]) {
+  BunnyData *bd = loadBunny();//should probably free this stuff at some point+++
+  if (!bd) return pterr(-1, "Bunny Failure, all hope is lost...");
 
-void do_shaders() {
-	ShaderProgram *program;
-	program->vertexShaderName = "phong.vert";
-	program->fragmentShaderName = "phong.frag";\
-	// This is here in case we need to access the program's ID again
-	program->programID = loadShaders(program);
+  //Basic GLUT setup
+  glutInit(&argc, argv);
+  glutInitDisplayMode(GLUT_RGBA|GLUT_DEPTH|GLUT_DOUBLE|GLUT_MULTISAMPLE);
+  glutInitWindowSize(768, 768);
+  glutInitWindowPosition(4000, 200);
+  glutCreateWindow("Hopefully a bunny");
 
-	loadVariables(program);
+  //Our Custom Setup Functions
+  if(createViewVolume()) return pterr(-2, "Failing to make view volume???");
+  if(createLights()) return pterr(-3, "Failed to create lights.");
+  if(createMaterials()) return pterr(-4, "Failed with materials for bunny.");
+  if(createShaders()) return pterr(-5, "Shader failure in init.");
+  if(createTextures()) return pterr(-5, "Texture failure in init.");
+
+  //Loading the bunny to the gpu
+  glGenBuffers(1,&bunnyPointer);
+  glBindBuffer(GL_ARRAY_BUFFER, bunnyPointer);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*bd->dataSize, bd->data, GL_STATIC_DRAW);
+  glVertexPointer(3, GL_FLOAT, 3 * sizeof(GLfloat), NULL);
+  glNormalPointer(GL_FLOAT, 3 * sizeof(GLfloat), (GLfloat *)(bd->vertSize * sizeof(GLfloat)));
+  glEnableClientState(GL_VERTEX_ARRAY);
+  glEnableClientState(GL_NORMAL_ARRAY);
+  bunnyVertices = bd->totalVertices;
+
+  return 0;
 }
 
-int main(int argc, char **argv) {
-  initOGL(argc,argv);
-  do_shaders();
-  glutDisplayFunc(draw_stuff);
-  glutIdleFunc(update);
-  glutKeyboardFunc(getout);
+int main(int argc, char *argv[]) {
+  if (init(argc,argv)) pterr(-1, "Failure in init.");
+  glutDisplayFunc(displayHandler);
+  glutIdleFunc(idleHandler);
+  glutKeyboardFunc(keyboardHandler);
   glutMainLoop();
   return 0;
 }

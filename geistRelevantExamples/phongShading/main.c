@@ -20,6 +20,7 @@
 // after a gluLookAt(), you'll need to do the lighting in eye coordinates,
 // not world coordinates.
 //
+
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/glut.h>

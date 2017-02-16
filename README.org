@@ -1,9 +1,12 @@
 # OpenGL-Bunny
 # This is written in a markup language called org mode.
 * Recent Notes
-Hey guys, I wrote some code for parsing and reading in the data and making the
-bunny show. It is no longer split into a bunch of files, but now uses VBO for
-holding the bunny's data.
+
+We now have shaders and better lighting added. driver.c was rewritten and the
+code is much neater in my opinion. Also, I found out why there were implicit
+declaration warnings and got rid of them with some #defines. Apparently there
+are some standard practices for opengl which require you to do that to avoid
+errors.
 
 It also now rotates, similarly to his rotating cube example. We can now see what
 we are doing a bit easier. There are also some comments to show what I changed
