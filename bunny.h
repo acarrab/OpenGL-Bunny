@@ -14,7 +14,8 @@
 
 typedef struct BUNNYDATA{
   int totalTriangles, totalVertices;
-  int vertSize, dataSize;
+  int vertSize, dataSize, bufferSize;
+  int colorPointer;
   GLfloat *data;
 } BunnyData;
 
