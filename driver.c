@@ -16,6 +16,7 @@
 #include "bunny.h"
 
 #define WITH_TEXTURE false
+#define WITH_BUNNY true
 
 //Global variables
 GLuint bunnyPointer;
@@ -30,6 +31,7 @@ int pterr(int returnValue, const char *message) {
 
 int createViewVolume() {
   glEnable(GL_DEPTH_TEST);
+
 
   // Specify shape and size of the view volume.
   glMatrixMode(GL_PROJECTION);
@@ -141,14 +143,17 @@ void displayHandler() {
   glClearColor(0.1, 0.1, 0.4, 1.0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   //Texture addition
+  if (WITH_BUNNY) glBindVertexArray(bunnyPointer);
   if (WITH_TEXTURE) {
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, 1);
+  }
+  if (WITH_BUNNY) {
+    glDrawArrays(GL_TRIANGLES, 0, bunnyVertices);
+  } else {
     glTranslatef(-.01,0.06,0);
     glutSolidTeapot(.07);
     glTranslatef(.01,-0.06,0);
-  } else {
-    glDrawArrays(GL_TRIANGLES, 0, bunnyVertices);
   }
   glutSwapBuffers();
 }
@@ -157,14 +162,14 @@ void idleHandler() {
   usleep(10000);
   //translates to center of bunny, then rotates the bunny, then goes back to
   //where we were
-  if (WITH_TEXTURE) {
-    glTranslatef(-.01,0.0,0);
-    glRotatef(.5,0.0,.1,0.0);
-    glTranslatef(.01,0.0,0);
-  } else {
+  if (WITH_BUNNY) {
     glTranslatef(-0.01684,0.0,-0.00153);
     glRotatef(.5,0.0,.1,0.0);
     glTranslatef(0.01684,0.0,0.00153);
+  } else {
+    glTranslatef(-.01,0.0,0);
+    glRotatef(.5,0.0,.1,0.0);
+    glTranslatef(.01,0.0,0);
   }
   glutPostRedisplay();
 }
