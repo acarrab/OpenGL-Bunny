@@ -9,12 +9,13 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
+#include <stdbool.h>
 #include <fcntl.h>
 #include "shader.h"
 #include "texturing.h"
 #include "bunny.h"
 
-
+#define WITH_TEXTURE false
 
 //Global variables
 GLuint bunnyPointer;
@@ -119,7 +120,10 @@ int createShaders() {
 	ShaderProgram *program = (ShaderProgram *)malloc(sizeof(ShaderProgram));
 
 	program->vertexShaderName = "phong.vert";
-	program->fragmentShaderName = "phong.frag";
+  if (WITH_TEXTURE)
+    program->fragmentShaderName = "phongTex.frag";
+  else
+    program->fragmentShaderName = "phong.frag";
 	// This is here in case we need to access the program's ID again
 	program->programID = loadShaders(program);
 	loadVariables(program);
@@ -137,13 +141,15 @@ void displayHandler() {
   glClearColor(0.1, 0.1, 0.4, 1.0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   //Texture addition
-  /*
-  glActiveTexture(GL_TEXTURE0);
-  glBindTexture(GL_TEXTURE_2D, 1);
-  glTranslatef(-0.1,0.0,0);
-  glutSolidTeapot(.01);
-  glTranslatef(0.1,0.0,0);*/
-  glDrawArrays(GL_TRIANGLES, 0, bunnyVertices);
+  if (WITH_TEXTURE) {
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, 1);
+    glTranslatef(-.01,0.06,0);
+    glutSolidTeapot(.07);
+    glTranslatef(.01,-0.06,0);
+  } else {
+    glDrawArrays(GL_TRIANGLES, 0, bunnyVertices);
+  }
   glutSwapBuffers();
 }
 //where the spinning happens
@@ -151,9 +157,15 @@ void idleHandler() {
   usleep(10000);
   //translates to center of bunny, then rotates the bunny, then goes back to
   //where we were
-  glTranslatef(-0.01684,0.0,-0.00153);
-  glRotatef(.5,0.0,.1,0.0);
-  glTranslatef(0.01684,0.0,0.00153);
+  if (WITH_TEXTURE) {
+    glTranslatef(-.01,0.0,0);
+    glRotatef(.5,0.0,.1,0.0);
+    glTranslatef(.01,0.0,0);
+  } else {
+    glTranslatef(-0.01684,0.0,-0.00153);
+    glRotatef(.5,0.0,.1,0.0);
+    glTranslatef(0.01684,0.0,0.00153);
+  }
   glutPostRedisplay();
 }
 void keyboardHandler(unsigned char key, int x, int y) {
@@ -170,6 +182,7 @@ int init(int argc, char *argv[]) {
   if (!bd) return pterr(-1, "Bunny Failure, all hope is lost...");
 
   //Basic GLUT setup
+
   glutInit(&argc, argv);
   glutInitDisplayMode(GLUT_RGBA|GLUT_DEPTH|GLUT_DOUBLE|GLUT_MULTISAMPLE);
   glutInitWindowSize(768, 768);
@@ -181,7 +194,7 @@ int init(int argc, char *argv[]) {
   if(createLights()) return pterr(-3, "Failed to create lights.");
   if(createMaterials()) return pterr(-4, "Failed with materials for bunny.");
   if(createShaders()) return pterr(-5, "Shader failure in init.");
-  if(createTextures()) return pterr(-5, "Texture failure in init.");
+  if (WITH_TEXTURE && createTextures()) return pterr(-5, "Texture failure in init.");
 
   //Loading the bunny to the gpu
   glGenBuffers(1,&bunnyPointer);
