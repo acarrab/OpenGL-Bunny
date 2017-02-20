@@ -1,4 +1,5 @@
 #include "texturing.h"
+GLint textureLocation;
 int loadTexture(const char *filename)
 {
   FILE *fopen(), *fptr;
@@ -26,12 +27,13 @@ int loadTexture(const char *filename)
   texture_bytes = (unsigned char *)calloc(3,im_size);
   fread(texture_bytes,3,im_size,fptr);
   fclose(fptr);
-
-  glBindTexture(GL_TEXTURE_2D,1);
+  glGenTextures(1, &textureLocation);
+  glBindTexture(GL_TEXTURE_2D,textureLocation);
   glTexImage2D(GL_TEXTURE_2D,0,GL_RGB,im_width,im_height,0,GL_RGB,
                GL_UNSIGNED_BYTE,texture_bytes);
   glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
   glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
+  glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
   cfree(texture_bytes);
 
   return 0;
@@ -43,4 +45,13 @@ void set_uniform(int p)
   int location;
   location = glGetUniformLocation(p,"mytexture");
   glUniform1i(location,0);
+}
+
+void activateTexture() {
+  glActiveTexture(GL_TEXTURE0);
+  glBindTexture(GL_TEXTURE_2D, textureLocation);
+  GLint texArray = GL_SPHERE_MAP;
+  glTexGeniv(GL_S, GL_TEXTURE_GEN_MODE, &texArray);
+  glTexGeniv(GL_T, GL_TEXTURE_GEN_MODE, &texArray);
+
 }

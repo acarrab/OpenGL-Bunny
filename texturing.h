@@ -17,5 +17,5 @@
 
 int loadTexture(const char *);
 void set_uniform(int p);
-
+void activateTexture();
 #endif

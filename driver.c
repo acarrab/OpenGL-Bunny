@@ -15,8 +15,8 @@
 #include "texturing.h"
 #include "bunny.h"
 
-#define WITH_TEXTURE false
-#define WITH_BUNNY true
+#define WITH_TEXTURE true
+#define WITH_BUNNY false
 
 //Global variables
 GLuint bunnyPointer;
@@ -145,8 +145,7 @@ void displayHandler() {
   //Texture addition
   if (WITH_BUNNY) glBindVertexArray(bunnyPointer);
   if (WITH_TEXTURE) {
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, 1);
+    activateTexture();
   }
   if (WITH_BUNNY) {
     glDrawArrays(GL_TRIANGLES, 0, bunnyVertices);
