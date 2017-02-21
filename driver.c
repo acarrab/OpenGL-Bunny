@@ -16,7 +16,7 @@
 #include "bunny.h"
 
 #define WITH_TEXTURE true
-#define WITH_BUNNY false
+#define WITH_BUNNY true
 
 //Global variables
 GLuint bunnyPointer;
@@ -50,8 +50,8 @@ int createViewVolume() {
 int createLights() {
   // Key light
   float light0_ambient[] = { 0.0, 0.0, 0.0, 0.0 };
-  float light0_diffuse[] = { 0.0, 1.0, 1.0, 0.0 };
-  float light0_specular[] = { 1.0, 0.0, 1.0, 0.0 };
+  float light0_diffuse[] = { 0.0, 0.5, 0.0, 0.0 };
+  float light0_specular[] = { 0.0, 0.8, 0.0, 0.0 };
   float light0_position[] = { 0.5, 2.0, 0.5, 1.0 };
   float light0_direction[] = { -1.5, -2.0, -2.0, 1.0};
 
@@ -122,10 +122,7 @@ int createShaders() {
 	ShaderProgram *program = (ShaderProgram *)malloc(sizeof(ShaderProgram));
 
 	program->vertexShaderName = "phong.vert";
-  if (WITH_TEXTURE)
-    program->fragmentShaderName = "phongTex.frag";
-  else
-    program->fragmentShaderName = "phong.frag";
+  program->fragmentShaderName = "phongTex.frag";
 	// This is here in case we need to access the program's ID again
 	program->programID = loadShaders(program);
 	loadVariables(program);
@@ -133,9 +130,9 @@ int createShaders() {
   return 0;
 }
 int createTextures() {
-  loadTexture("space.ppm");
+  int textureID = loadTexture("probe.ppm");
   int location = glGetUniformLocation(shaderProgramId, "mytexture");
-  glUniform1i(location,0);
+  glUniform1i(location, 0);
   return 0;
 }
 //where the magic happens
@@ -144,12 +141,9 @@ void displayHandler() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   //Texture addition
   if (WITH_BUNNY) glBindVertexArray(bunnyPointer);
-  if (WITH_TEXTURE) {
-    activateTexture();
-  }
-  if (WITH_BUNNY) {
-    glDrawArrays(GL_TRIANGLES, 0, bunnyVertices);
-  } else {
+  if (WITH_TEXTURE) activateTexture();
+  if (WITH_BUNNY) glDrawArrays(GL_TRIANGLES, 0, bunnyVertices);
+	else {
     glTranslatef(-.01,0.06,0);
     glutSolidTeapot(.07);
     glTranslatef(.01,-0.06,0);
@@ -195,8 +189,8 @@ int init(int argc, char *argv[]) {
 
   //Our Custom Setup Functions
   if(createViewVolume()) return pterr(-2, "Failing to make view volume???");
-  if(createLights()) return pterr(-3, "Failed to create lights.");
-  if(createMaterials()) return pterr(-4, "Failed with materials for bunny.");
+	if(createLights()) return pterr(-3, "Failed to create lights.");
+	if(createMaterials()) return pterr(-4, "Failed with materials for bunny.");
   if(createShaders()) return pterr(-5, "Shader failure in init.");
   if (WITH_TEXTURE && createTextures()) return pterr(-5, "Texture failure in init.");
 
@@ -213,6 +207,14 @@ int init(int argc, char *argv[]) {
   glEnableClientState(GL_TEXTURE_COORD_ARRAY);
   bunnyVertices = bd->totalVertices;
 
+	// Alpha
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_CULL_FACE);
+	if (WITH_BUNNY)
+		glCullFace(GL_BACK);
+	else
+		glCullFace(GL_FRONT);
   return 0;
 }
 

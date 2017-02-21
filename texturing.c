@@ -33,7 +33,6 @@ int loadTexture(const char *filename)
                GL_UNSIGNED_BYTE,texture_bytes);
   glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
   glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
-  glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
   cfree(texture_bytes);
 
   return 0;
@@ -50,8 +49,4 @@ void set_uniform(int p)
 void activateTexture() {
   glActiveTexture(GL_TEXTURE0);
   glBindTexture(GL_TEXTURE_2D, textureLocation);
-  GLint texArray = GL_SPHERE_MAP;
-  glTexGeniv(GL_S, GL_TEXTURE_GEN_MODE, &texArray);
-  glTexGeniv(GL_T, GL_TEXTURE_GEN_MODE, &texArray);
-
 }
