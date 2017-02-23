@@ -19,6 +19,6 @@ typedef struct BUNNYDATA{
   GLfloat *data;
 } BunnyData;
 
-BunnyData* loadBunny();
+BunnyData loadBunny();
 
 #endif

@@ -176,8 +176,7 @@ void keyboardHandler(unsigned char key, int x, int y) {
   }
 }
 int init(int argc, char *argv[]) {
-  BunnyData *bd = loadBunny();//should probably free this stuff at some point+++
-  if (!bd) return pterr(-1, "Bunny Failure, all hope is lost...");
+  BunnyData bd = loadBunny();//should probably free this stuff at some point+++
 
   //Basic GLUT setup
 
@@ -197,24 +196,27 @@ int init(int argc, char *argv[]) {
   //Loading the bunny to the gpu
   glGenBuffers(1,&bunnyPointer);
   glBindBuffer(GL_ARRAY_BUFFER, bunnyPointer);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*bd->bufferSize, bd->data, GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*bd.bufferSize, bd.data, GL_STATIC_DRAW);
   glVertexPointer(3, GL_FLOAT, 3 * sizeof(GLfloat), NULL);
-  glNormalPointer(GL_FLOAT, 3 * sizeof(GLfloat), (GLfloat *)(bd->vertSize * sizeof(GLfloat)));
-  glTexCoordPointer(4, GL_FLOAT, 4 * sizeof(GLfloat), (GLfloat *)(bd->colorPointer * sizeof(GLfloat)));
+  glNormalPointer(GL_FLOAT, 3 * sizeof(GLfloat), (GLfloat *)(bd.vertSize * sizeof(GLfloat)));
+  glTexCoordPointer(4, GL_FLOAT, 4 * sizeof(GLfloat), (GLfloat *)(bd.colorPointer * sizeof(GLfloat)));
   glEnableClientState(GL_VERTEX_ARRAY);
   glEnableClientState(GL_NORMAL_ARRAY);
   glEnableClientState(GL_COLOR_ARRAY);
   glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-  bunnyVertices = bd->totalVertices;
+  bunnyVertices = bd.totalVertices;
 
-	// Alpha
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glEnable(GL_CULL_FACE);
-	if (WITH_BUNNY)
-		glCullFace(GL_BACK);
-	else
-		glCullFace(GL_FRONT);
+  // Alpha
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  glEnable(GL_CULL_FACE);
+  if (WITH_BUNNY)
+    glCullFace(GL_BACK);
+  else
+    glCullFace(GL_FRONT);
+
+
+  free(bd.data);
   return 0;
 }
 
