@@ -10,7 +10,7 @@ bool there(FILE *f, const char *previous, const char *current) {
 VertexData* parseFrom(const char * fileName) {
   FILE *f = fopen(fileName, "r");
   int i;
-  VertexData *vd = (VertexData *)malloc(sizeof(vd));
+  VertexData *vd = (VertexData *)malloc(sizeof(VertexData));
   char curr[50] = "\0";
 
   //get to vertex count
