@@ -29,5 +29,5 @@ void main()
 	diffuse[0] *= max(dot(N,L),0.1);
 	specular_color *= pow(max(dot(H,N),0.0),shininess);
 	
-    gl_FragColor = vec4(((diffuse[0] * tcolor) + specular_color).xyz, 1.0);
+    gl_FragColor = vec4(((diffuse[0] * tcolor * 0.1) + specular_color).xyz, 1.0);
 }
