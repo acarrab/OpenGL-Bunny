@@ -13,5 +13,11 @@ void main()
 	// flat_normal allows a static texture
 	//textureCoords = vec2(asin(flat_normal.x)/3.14 + 0.5, -asin(flat_normal.y)/3.14 + 0.5);
 	// ec_vnormal allows a texture that changes with transformations
-	textureCoords = vec2(asin(ec_vnormal.x)/3.14 + 0.5, -asin(ec_vnormal.y)/3.14 + 0.5);
+
+	// Old way that we generated texture coordinates
+	//textureCoords = vec2(asin(ec_vnormal.x)/3.14 + 0.5, -asin(ec_vnormal.y)/3.14 + 0.5);
+
+	textureCoords = gl_TextureMatrix[0] * gl_Vertex;
+
+
 }

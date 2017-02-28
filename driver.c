@@ -179,6 +179,11 @@ int createTextures() {
   int textureID = loadTexture("probe.ppm");
   int location = glGetUniformLocation(shaderProgramId, "mytexture");
   glUniform1i(location, 0);
+	// New function calls
+	glTexGeni(GL_S, GL_SPHERE_MAP, GL_OBJECT_LINEAR);
+	glTexGeni(GL_T, GL_SPHERE_MAP, GL_OBJECT_LINEAR);
+	glTexGeni(GL_R, GL_SPHERE_MAP, GL_OBJECT_LINEAR);
+	glTexGeni(GL_Q, GL_SPHERE_MAP, GL_OBJECT_LINEAR);
   return 0;
 }
 //where the magic happens
