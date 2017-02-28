@@ -119,13 +119,13 @@ int createMaterials() {
 }
 
 int createShaders() {
-	ShaderProgram *program = (ShaderProgram *)malloc(sizeof(ShaderProgram));
-
-	program->vertexShaderName = "phong.vert";
+  ShaderProgram *program = (ShaderProgram *)malloc(sizeof(ShaderProgram));
+  //choose the vertex shader and the fragment shader
+  program->vertexShaderName = "phong.vert";
   program->fragmentShaderName = "phongTex.frag";
-	// This is here in case we need to access the program's ID again
-	program->programID = loadShaders(program);
-	loadVariables(program);
+  // This is here in case we need to access the program's ID again
+  program->programID = loadShaders(program);
+  loadVariables(program);
   shaderProgramId = program->programID;
   return 0;
 }
@@ -137,6 +137,7 @@ int createTextures() {
 }
 //where the magic happens
 void displayHandler() {
+  //background color
   glClearColor(0.1, 0.1, 0.4, 1.0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   //Texture addition
@@ -156,8 +157,11 @@ void idleHandler() {
   //translates to center of bunny, then rotates the bunny, then goes back to
   //where we were
   if (WITH_BUNNY) {
+    //move to center coordinates of bunny
     glTranslatef(-0.01684,0.0,-0.00153);
+    //rotate everything
     glRotatef(.5,0.0,.1,0.0);
+    //move back to where I should be
     glTranslatef(0.01684,0.0,0.00153);
   } else {
     glTranslatef(-.01,0.0,0);
@@ -183,7 +187,7 @@ int init(int argc, char *argv[]) {
   glutInit(&argc, argv);
   glutInitDisplayMode(GLUT_RGBA|GLUT_DEPTH|GLUT_DOUBLE|GLUT_MULTISAMPLE);
   glutInitWindowSize(768, 768);
-  glutInitWindowPosition(4000, 200);
+  glutInitWindowPosition(1000, 200);
   glutCreateWindow("Hopefully a bunny");
 
   //Our Custom Setup Functions
