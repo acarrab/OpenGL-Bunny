@@ -180,7 +180,7 @@ void keyboardHandler(unsigned char key, int x, int y) {
   }
 }
 int init(int argc, char *argv[]) {
-  BunnyData bd = loadBunny();//should probably free this stuff at some point+++
+  BunnyData bd = loadBunny();
 
   //Basic GLUT setup
 
@@ -214,9 +214,10 @@ int init(int argc, char *argv[]) {
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   glEnable(GL_CULL_FACE);
+  // texture is drawn on the back of the vertices, because the bunny is backwards
   if (WITH_BUNNY)
     glCullFace(GL_BACK);
-  else
+  else // teapot is normal so cull the front
     glCullFace(GL_FRONT);
 
 
