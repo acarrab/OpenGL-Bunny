@@ -122,6 +122,32 @@ int createLights() {
   glEnable(GL_LIGHTING);
   glEnable(GL_LIGHT1);
 
+	// Fill light
+	float light2_ambient[] = { 0.0, 0.0, 0.0, 0.0 };
+  float light2_diffuse[] = { 0.0, .2, .2, 1.0 };
+  float light2_specular[] = { 0.0, 0.0, 0.0, 0.0 };
+  float light2_position[] = { 0.0, 2.0, 0.2, 1.0 };
+  float light2_direction[] = { 0.0, -2.0, -0.2, 1.0};
+
+  // Turn off scene default ambient.
+  glLightModelfv(GL_LIGHT_MODEL_AMBIENT,light1_ambient);
+
+  // Make specular correct for spots.
+  glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER,1);
+
+  glLightfv(GL_LIGHT2,GL_AMBIENT,light2_ambient);
+  glLightfv(GL_LIGHT2,GL_DIFFUSE,light2_diffuse);
+  glLightfv(GL_LIGHT2,GL_SPECULAR,light2_specular);
+  glLightf(GL_LIGHT2,GL_SPOT_EXPONENT,1.0);
+  glLightf(GL_LIGHT2,GL_SPOT_CUTOFF,180.0);
+  glLightf(GL_LIGHT2,GL_CONSTANT_ATTENUATION,0.5);
+  glLightf(GL_LIGHT2,GL_LINEAR_ATTENUATION,0.1);
+  glLightf(GL_LIGHT2,GL_QUADRATIC_ATTENUATION,0.01);
+  glLightfv(GL_LIGHT2,GL_POSITION,light2_position);
+  glLightfv(GL_LIGHT2,GL_SPOT_DIRECTION,light2_direction);
+
+  glEnable(GL_LIGHT2);
+
   return 0;
 }
 
