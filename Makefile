@@ -16,9 +16,11 @@ EXEC = run
 # $@ refers to the left side of the :
 %.o: %.c
 	$(CXX) $(CXXFLAGS) -c $< -o $@
+default: $(OBJS)
+	$(CXX) $(CXXFLAGS) -o $(EXEC) $(OBJS) $(LDFLAGS)
 
-$(EXEC): $(OBJS)
-	$(CXX) $(CXXFLAGS) -o $@ $(OBJS) $(LDFLAGS)
+$(EXEC): default
+	./$(EXEC)
 
 driver.o: driver.c parser.h shader.h texturing.h bunny.h
 

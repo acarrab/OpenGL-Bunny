@@ -174,7 +174,7 @@ void keyboardHandler(unsigned char key, int x, int y) {
   switch(key) {
   case 'q':
     glDeleteBuffers(1,&bunnyPointer);
-    exit(1);
+    exit(0);
   default:
     break;
   }
