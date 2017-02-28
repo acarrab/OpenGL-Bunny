@@ -18,16 +18,36 @@
 #define WITH_TEXTURE true
 #define WITH_BUNNY true
 
-//Global variables
-GLuint bunnyPointer;
-GLuint bunnyVertices;
-GLuint shaderProgramId;
 
+//definitions
+/* =========================== Base Init Function =========================== */
+int init(int argc, char *argv[]);
+/* ~~~~~~~~~~~~~~~~ Referenced Functions ~~~~~~~~~~~~~~~~ */
+int createViewVolume();
+int createLights();
+int createMaterials();
+int createShaders();
+int createTextures();
+
+/* ============================ Passed Into GLUT ============================ */
+void displayHandler();
+void idleHandler();
+void keyboardHandler(unsigned char key, int x, int y);
+
+
+/* ============================ Helper Functions ============================ */
 //simple error printing function
 int pterr(int returnValue, const char *message) {
   fprintf(stderr, "%s\n", message);
   return returnValue;
 }
+/* ============================ Helper Variables ============================ */
+//Globally defined
+GLuint bunnyPointer;
+GLuint bunnyVertices;
+GLuint shaderProgramId;
+
+
 
 int createViewVolume() {
   glEnable(GL_DEPTH_TEST);
@@ -144,7 +164,7 @@ void displayHandler() {
   if (WITH_BUNNY) glBindVertexArray(bunnyPointer);
   if (WITH_TEXTURE) activateTexture();
   if (WITH_BUNNY) glDrawArrays(GL_TRIANGLES, 0, bunnyVertices);
-	else {
+  else {
     glTranslatef(-.01,0.06,0);
     glutSolidTeapot(.07);
     glTranslatef(.01,-0.06,0);
@@ -192,8 +212,8 @@ int init(int argc, char *argv[]) {
 
   //Our Custom Setup Functions
   if(createViewVolume()) return pterr(-2, "Failing to make view volume???");
-	if(createLights()) return pterr(-3, "Failed to create lights.");
-	if(createMaterials()) return pterr(-4, "Failed with materials for bunny.");
+  if(createLights()) return pterr(-3, "Failed to create lights.");
+  if(createMaterials()) return pterr(-4, "Failed with materials for bunny.");
   if(createShaders()) return pterr(-5, "Shader failure in init.");
   if (WITH_TEXTURE && createTextures()) return pterr(-5, "Texture failure in init.");
 
