@@ -68,12 +68,12 @@ int createViewVolume() {
 }
 
 int createLights() {
-  // Key light
+  // Fill light
   float light0_ambient[] = { 0.0, 0.0, 0.0, 0.0 };
-  float light0_diffuse[] = { 0.0, 0.5, 0.0, 0.0 };
-  float light0_specular[] = { 0.0, 0.8, 0.0, 0.0 };
-  float light0_position[] = { 0.5, 2.0, 0.5, 1.0 };
-  float light0_direction[] = { -1.5, -2.0, -2.0, 1.0};
+  float light0_diffuse[] = { 0.5, 0.3, 0.8, 1.0 };
+  float light0_specular[] = { 1.0, 0.4, 1.3, 1.0 };
+  float light0_position[] = { 0.25, 0.3, 0.1, 1.0 };
+  float light0_direction[] = { -0.2, -0.3, 0.0, 1.0};
 
   // Turn off scene default ambient.
   glLightModelfv(GL_LIGHT_MODEL_AMBIENT,light0_ambient);
@@ -97,10 +97,10 @@ int createLights() {
 
 	// Back light
 	float light1_ambient[] = { 0.0, 0.0, 0.0, 0.0 };
-  float light1_diffuse[] = { 0.0, .8, .8, 0.0 };
-  float light1_specular[] = { 1.0, 1.0, 1.0, 0.0 };
-  float light1_position[] = { -0.5, 2.0, -0.5, 1.0 };
-  float light1_direction[] = { 0.5, -2.0, 0.5, 1.0};
+  float light1_diffuse[] = { 1.2, 1.0, 0.7, 1.0 };
+  float light1_specular[] = { 1.2, 1.0, 0.7, 1.0 };
+  float light1_position[] = { -0.2, 0.4, -0.2, 1.0 };
+  float light1_direction[] = { 0.2, -0.4, 0.2, 1.0};
 
   // Turn off scene default ambient.
   glLightModelfv(GL_LIGHT_MODEL_AMBIENT,light1_ambient);
@@ -122,13 +122,12 @@ int createLights() {
   glEnable(GL_LIGHTING);
   glEnable(GL_LIGHT1);
 
-	// Fill light
+	// Key light
 	float light2_ambient[] = { 0.0, 0.0, 0.0, 0.0 };
-  float light2_diffuse[] = { 0.0, .2, .2, 1.0 };
-  float light2_specular[] = { 0.0, 0.0, 0.0, 0.0 };
-  float light2_position[] = { 0.0, 2.0, 0.2, 1.0 };
-  float light2_direction[] = { 0.0, -2.0, -0.2, 1.0};
-
+  float light2_diffuse[] = { 1.5, 0.0, 0.0, 1.0 };
+  float light2_specular[] = { 0.8, 0.0, 0.0, 1.0 };
+  float light2_position[] = { 0.1, 0.3, 0.25, 1.0 };
+  float light2_direction[] = { -0.1, -0.3, -0.25, 1.0};
   // Turn off scene default ambient.
   glLightModelfv(GL_LIGHT_MODEL_AMBIENT,light1_ambient);
 
@@ -179,17 +178,12 @@ int createTextures() {
   int textureID = loadTexture("probe.ppm");
   int location = glGetUniformLocation(shaderProgramId, "mytexture");
   glUniform1i(location, 0);
-	// New function calls
-	glTexGeni(GL_S, GL_SPHERE_MAP, GL_OBJECT_LINEAR);
-	glTexGeni(GL_T, GL_SPHERE_MAP, GL_OBJECT_LINEAR);
-	glTexGeni(GL_R, GL_SPHERE_MAP, GL_OBJECT_LINEAR);
-	glTexGeni(GL_Q, GL_SPHERE_MAP, GL_OBJECT_LINEAR);
   return 0;
 }
 //where the magic happens
 void displayHandler() {
   //background color
-  glClearColor(0.1, 0.1, 0.4, 1.0);
+  glClearColor(0.9, 0.7, 0.4, 1.0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   //Texture addition
   if (WITH_BUNNY) glBindVertexArray(bunnyPointer);
