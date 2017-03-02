@@ -10,7 +10,24 @@ errors.
 
 There is a makefile so to run just do this stuff.
 #+BEGIN_SRC python
-Compy:~/Desktop/OpenGL-Bunny[0] make
+Compy:~/Desktop/OpenGL-Bunny[0] make run
+gcc -I/usr/include -I/usr/X11R6/include -L/usr/lib -L/usr/X11R6/lib -L/usr/lib64 -O0 -g -c driver.c -o driver.o
+gcc -I/usr/include -I/usr/X11R6/include -L/usr/lib -L/usr/X11R6/lib -L/usr/lib64 -O0 -g -c parser.c -o parser.o
+gcc -I/usr/include -I/usr/X11R6/include -L/usr/lib -L/usr/X11R6/lib -L/usr/lib64 -O0 -g -c shader.c -o shader.o
+gcc -I/usr/include -I/usr/X11R6/include -L/usr/lib -L/usr/X11R6/lib -L/usr/lib64 -O0 -g -c texturing.c -o texturing.o
+gcc -I/usr/include -I/usr/X11R6/include -L/usr/lib -L/usr/X11R6/lib -L/usr/lib64 -O0 -g -c bunny.c -o bunny.o
+gcc -I/usr/include -I/usr/X11R6/include -L/usr/lib -L/usr/X11R6/lib -L/usr/lib64 -O0 -g -o run driver.o parser.o shader.o texturing.o bunny.o -lX11 -lGL -lGLU -lGLEW -lglut -lm -lXmu -lXi
+./run
+
+Compy:~/Desktop/OpenGL-Bunny[1] make clean
+rm -rf driver.o parser.o shader.o texturing.o bunny.o
+rm -rf run
+
+#+END_SRC
+
+If you want to run multiple times, you can do a plain make and then run separately
+#+BEGIN_SRC python
+acarrab@Compy:~/Desktop/OpenGL-Bunny[2] make
 gcc -I/usr/include -I/usr/X11R6/include -L/usr/lib -L/usr/X11R6/lib -L/usr/lib64 -O0 -g -c driver.c -o driver.o
 gcc -I/usr/include -I/usr/X11R6/include -L/usr/lib -L/usr/X11R6/lib -L/usr/lib64 -O0 -g -c parser.c -o parser.o
 gcc -I/usr/include -I/usr/X11R6/include -L/usr/lib -L/usr/X11R6/lib -L/usr/lib64 -O0 -g -c shader.c -o shader.o
@@ -18,27 +35,15 @@ gcc -I/usr/include -I/usr/X11R6/include -L/usr/lib -L/usr/X11R6/lib -L/usr/lib64
 gcc -I/usr/include -I/usr/X11R6/include -L/usr/lib -L/usr/X11R6/lib -L/usr/lib64 -O0 -g -c bunny.c -o bunny.o
 gcc -I/usr/include -I/usr/X11R6/include -L/usr/lib -L/usr/X11R6/lib -L/usr/lib64 -O0 -g -o run driver.o parser.o shader.o texturing.o bunny.o -lX11 -lGL -lGLU -lGLEW -lglut -lm -lXmu -lXi
 
-Compy:~/Desktop/OpenGL-Bunny[1] ./run
-
-Compy:~/Desktop/OpenGL-Bunny[2] make clean
-rm -rf driver.o parser.o shader.o texturing.o bunny.o
-rm -rf run
-
+acarrab@Compy:~/Desktop/OpenGL-Bunny[3] ./run
 #+END_SRC
-
 
 * OpenGL-Bunny
 Stanford Bunny with OpenGL
 
 ** Our Todo list
-- Change lighting and colors to be used
-- Fix up direction
-- We must implement one of the following features as well.
-  - Motion-blur
-  - Depth of Field
-  - Textures
-  - Shadows
-  - A user interface with selectable eye point and view direction.
+*** Optional
+    - Motion-blur
 
 ** Our done list
 - Parsing
@@ -46,6 +51,9 @@ Stanford Bunny with OpenGL
 - Maybe apply transform to bunny to rotate to a better viewing angle
 - Fix the view volumes
 - Change material, things like shininess.
+- Change lighting and colors to be used
+*** Additional feature
+  - Texture
 
 ** Contributors
 /Kylon Tyner/,

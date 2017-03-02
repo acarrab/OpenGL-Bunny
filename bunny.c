@@ -1,7 +1,7 @@
 #include "bunny.h"
 BunnyData loadBunny() {
   BunnyData  bd;
-  VertexData *vd = parseFrom("bunnyN.ply");//parseFrom("bun_zipper.ply");
+  VertexData *vd = parseFrom("bunnyN.ply");
   if (!vd) {
     fprintf(stderr, "Bunny Parse failed.\n");
     return bd;
