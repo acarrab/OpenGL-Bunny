@@ -62,7 +62,7 @@ int createViewVolume() {
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
   gluLookAt(0.2, 0.2, 0.2,  // eye xyz,
-            0.0, .0937, 0,  // view xyz,
+            -.01, .0937, 0,  // view xyz,
             0.0, 1.0, 0.0); // up xyz
   return 0;
 }
@@ -198,7 +198,7 @@ void idleHandler() {
   //move to center coordinates of bunny
   glTranslatef(-0.01684,0.0,-0.00153);
   //rotate everything
-  glRotatef(.5,0.0,.1,0.0);
+  glRotatef(.3,0.0,.1,0.0);
   //move back to where I should be
   glTranslatef(0.01684,0.0,0.00153);
   glutPostRedisplay();
