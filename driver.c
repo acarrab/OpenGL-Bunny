@@ -241,9 +241,6 @@ int init(int argc, char *argv[]) {
   //clear accumulation buffer
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glClear(GL_ACCUM_BUFFER_BIT);
-  glutSwapBuffers();
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  glClear(GL_ACCUM_BUFFER_BIT);
 
   //Our Custom Setup Functions
   if(createViewVolume()) return pterr(-2, "Failing to make view volume???");
