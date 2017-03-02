@@ -181,27 +181,39 @@ int createTextures() {
 }
 //where the magic happens
 void displayHandler() {
-  //background color
-  glClearColor(0.9, 0.7, 0.4, 1.0);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+  //glClear(GL_ACCUM_BUFFER_BIT);
   //Texture addition
+  //int i;
+
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glBindVertexArray(bunnyPointer);
   activateTexture();
   glDrawArrays(GL_TRIANGLES, 0, bunnyVertices);
-  glutSwapBuffers();
+  glFlush();
+
+  //
 }
 //where the spinning happens
 void idleHandler() {
-  usleep(10000);
+  //glClear(GL_ACCUM);
+  usleep(5000);
   //translates to center of bunny, then rotates the bunny, then goes back to
   //where we were
   //move to center coordinates of bunny
+  glAccum(GL_MULT, .95);
+
+  glutPostRedisplay();
   glTranslatef(-0.01684,0.0,-0.00153);
   //rotate everything
   glRotatef(.3,0.0,.1,0.0);
   //move back to where I should be
   glTranslatef(0.01684,0.0,0.00153);
-  glutPostRedisplay();
+  //fade before we add to it
+  glAccum(GL_ACCUM, .05);
+  glAccum(GL_RETURN, 1.0);
+  glFlush();
+  glutSwapBuffers();
 }
 void keyboardHandler(unsigned char key, int x, int y) {
   switch(key) {
@@ -218,10 +230,20 @@ int init(int argc, char *argv[]) {
   //Basic GLUT setup
 
   glutInit(&argc, argv);
-  glutInitDisplayMode(GLUT_RGBA|GLUT_DEPTH|GLUT_DOUBLE|GLUT_MULTISAMPLE);
+  glutInitDisplayMode(GLUT_RGBA|GLUT_DEPTH|GLUT_DOUBLE|GLUT_MULTISAMPLE|GLUT_ACCUM);
   glutInitWindowSize(768, 768);
   glutInitWindowPosition(1000, 200);
   glutCreateWindow("Hopefully a bunny");
+
+  //background color
+  glClearColor(0.9, 0.7, 0.4, 1.0);
+  glClearAccum(0.0, 0.0, 0.0, 1.0);
+  //clear accumulation buffer
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  glClear(GL_ACCUM_BUFFER_BIT);
+  glutSwapBuffers();
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  glClear(GL_ACCUM_BUFFER_BIT);
 
   //Our Custom Setup Functions
   if(createViewVolume()) return pterr(-2, "Failing to make view volume???");
