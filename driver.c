@@ -95,8 +95,8 @@ int createLights() {
   glEnable(GL_LIGHTING);
   glEnable(GL_LIGHT0);
 
-	// Back light
-	float light1_ambient[] = { 0.0, 0.0, 0.0, 0.0 };
+  // Back light
+  float light1_ambient[] = { 0.0, 0.0, 0.0, 0.0 };
   float light1_diffuse[] = { 1.2, 1.0, 0.7, 1.0 };
   float light1_specular[] = { 1.2, 1.0, 0.7, 1.0 };
   float light1_position[] = { -0.2, 0.4, -0.2, 1.0 };
@@ -122,8 +122,8 @@ int createLights() {
   glEnable(GL_LIGHTING);
   glEnable(GL_LIGHT1);
 
-	// Key light
-	float light2_ambient[] = { 0.0, 0.0, 0.0, 0.0 };
+  // Key light
+  float light2_ambient[] = { 0.0, 0.0, 0.0, 0.0 };
   float light2_diffuse[] = { 1.5, 0.0, 0.0, 1.0 };
   float light2_specular[] = { 0.8, 0.0, 0.0, 1.0 };
   float light2_position[] = { 0.1, 0.3, 0.25, 1.0 };
@@ -170,7 +170,6 @@ int createShaders() {
   program->fragmentShaderName = "phongTex.frag";
   // This is here in case we need to access the program's ID again
   program->programID = loadShaders(program);
-  loadVariables(program);
   shaderProgramId = program->programID;
   return 0;
 }
@@ -186,14 +185,9 @@ void displayHandler() {
   glClearColor(0.9, 0.7, 0.4, 1.0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   //Texture addition
-  if (WITH_BUNNY) glBindVertexArray(bunnyPointer);
-  if (WITH_TEXTURE) activateTexture();
-  if (WITH_BUNNY) glDrawArrays(GL_TRIANGLES, 0, bunnyVertices);
-  else {
-    glTranslatef(-.01,0.06,0);
-    glutSolidTeapot(.07);
-    glTranslatef(.01,-0.06,0);
-  }
+  glBindVertexArray(bunnyPointer);
+  activateTexture();
+  glDrawArrays(GL_TRIANGLES, 0, bunnyVertices);
   glutSwapBuffers();
 }
 //where the spinning happens
@@ -201,18 +195,12 @@ void idleHandler() {
   usleep(10000);
   //translates to center of bunny, then rotates the bunny, then goes back to
   //where we were
-  if (WITH_BUNNY) {
-    //move to center coordinates of bunny
-    glTranslatef(-0.01684,0.0,-0.00153);
-    //rotate everything
-    glRotatef(.5,0.0,.1,0.0);
-    //move back to where I should be
-    glTranslatef(0.01684,0.0,0.00153);
-  } else {
-    glTranslatef(-.01,0.0,0);
-    glRotatef(.5,0.0,.1,0.0);
-    glTranslatef(.01,0.0,0);
-  }
+  //move to center coordinates of bunny
+  glTranslatef(-0.01684,0.0,-0.00153);
+  //rotate everything
+  glRotatef(.5,0.0,.1,0.0);
+  //move back to where I should be
+  glTranslatef(0.01684,0.0,0.00153);
   glutPostRedisplay();
 }
 void keyboardHandler(unsigned char key, int x, int y) {
@@ -240,7 +228,7 @@ int init(int argc, char *argv[]) {
   if(createLights()) return pterr(-3, "Failed to create lights.");
   if(createMaterials()) return pterr(-4, "Failed with materials for bunny.");
   if(createShaders()) return pterr(-5, "Shader failure in init.");
-  if (WITH_TEXTURE && createTextures()) return pterr(-5, "Texture failure in init.");
+  if(createTextures()) return pterr(-5, "Texture failure in init.");
 
   //Loading the bunny to the gpu
   glGenBuffers(1,&bunnyPointer);
@@ -260,18 +248,15 @@ int init(int argc, char *argv[]) {
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   glEnable(GL_CULL_FACE);
   // texture is drawn on the back of the vertices, because the bunny is backwards
-  if (WITH_BUNNY)
-    glCullFace(GL_BACK);
-  else // teapot is normal so cull the front
-    glCullFace(GL_FRONT);
+  glCullFace(GL_BACK);
 
-
+  // free bunny data, it's the gpu's problem now
   free(bd.data);
   return 0;
 }
 
 int main(int argc, char *argv[]) {
-  if (init(argc,argv)) pterr(-1, "Failure in init.");
+  if (init(argc,argv)) return pterr(-1, "Failure in init.");
   glutDisplayFunc(displayHandler);
   glutIdleFunc(idleHandler);
   glutKeyboardFunc(keyboardHandler);

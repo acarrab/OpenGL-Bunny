@@ -1,6 +1,4 @@
-
 #include "shader.h"
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
@@ -8,7 +6,7 @@
 /*
 	Reads data from file into a string
 */
-char *readShader(char *filename) 
+char *readShader(char *filename)
 {
 	char *content = NULL;
 	int fd, count;
@@ -49,12 +47,4 @@ int loadShaders(ShaderProgram *program)
 	glLinkProgram(p);
 	glUseProgram(p);
 	return p;
-}
-
-/*
-	Loads any variables that need to be passed into the shaders
-*/
-void loadVariables(ShaderProgram *program)
-{
-	
 }

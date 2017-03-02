@@ -1,7 +1,7 @@
 #include "texturing.h"
 GLint textureLocation;
-int loadTexture(const char *filename)
-{
+
+int loadTexture(const char *filename) {
   FILE *fopen(), *fptr;
   char buf[512];
   int im_size, im_width, im_height, max_color;
@@ -12,7 +12,8 @@ int loadTexture(const char *filename)
   fgets(buf,512,fptr);
   do{
     fgets(buf,512,fptr);
-	} while(buf[0]=='#');
+  } while(buf[0]=='#');
+
   parse = strtok(buf," \t");
   im_width = atoi(parse);
 
@@ -35,22 +36,22 @@ int loadTexture(const char *filename)
   glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
   cfree(texture_bytes);
 
-	glEnable(GL_TEXTURE_GEN_S);
-	glEnable(GL_TEXTURE_GEN_T);
-	glEnable(GL_TEXTURE_GEN_R);
-	glEnable(GL_TEXTURE_GEN_Q);
+  //Adding the texture generation for sphere map mode
+  glEnable(GL_TEXTURE_GEN_S);
+  glEnable(GL_TEXTURE_GEN_T);
+  glEnable(GL_TEXTURE_GEN_R);
+  glEnable(GL_TEXTURE_GEN_Q);
 
-	glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);
-	glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);
-	glTexGeni(GL_R, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);
-	glTexGeni(GL_Q, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);
+  glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);
+  glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);
+  glTexGeni(GL_R, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);
+  glTexGeni(GL_Q, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);
 
   return 0;
 }
 
 //passing in the pointer for the shader program
-void set_uniform(int p)
-{
+void set_uniform(int p) {
   int location;
   location = glGetUniformLocation(p,"mytexture");
   glUniform1i(location,0);

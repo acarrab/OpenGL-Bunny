@@ -25,7 +25,6 @@ typedef struct SHADER_PROGRAM {
 
 char *readShader(char *filename);
 int loadShaders(ShaderProgram *program);
-void loadVariables(ShaderProgram *program);
 
 
 #endif
