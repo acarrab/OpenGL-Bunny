@@ -29,7 +29,7 @@ void main()
     H = normalize(L+V);
 
     vec4 tcolor;
-    tcolor = texture2D(mytexture, textureCoords) * 0.1;
+    tcolor = texture2D(mytexture, textureCoords) * 0.2;
 
     diffuse[0] *= max(dot(N,L),0.1);
     specular[0] *= pow(max(dot(H,N),0.0),shininess);

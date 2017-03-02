@@ -197,7 +197,7 @@ void displayHandler() {
 //where the spinning happens
 void idleHandler() {
   //glClear(GL_ACCUM);
-  usleep(5000);
+  usleep(7000);
   //translates to center of bunny, then rotates the bunny, then goes back to
   //where we were
   //move to center coordinates of bunny
