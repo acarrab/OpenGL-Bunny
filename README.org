@@ -20,20 +20,21 @@ Compy:~/Desktop/OpenGL-Bunny[3] make clean
 #+END_SRC
 * OpenGL-Bunny
 Stanford Bunny with OpenGL
-
+** Additional features
+  - Texture mapping
+  - Motion-blur
 ** Our Todo list
-
-** Our done list
-- Motion-blur
+- /nothing/
+** Our Done list
 - Parsing
 - Basic drawStuff layout
 - Maybe apply transform to bunny to rotate to a better viewing angle
 - Fix the view volumes
 - Change material, things like shininess.
 - Change lighting and colors to be used
-*** Additional feature
-  - Texture
-
+*** Additional features
+  - Texture mapping
+  - Motion-blur
 ** Contributors
 /Kylon Tyner/,
 /Connor Kinzie/,
