@@ -1,51 +1,30 @@
 # OpenGL-Bunny
 # This is written in a markup language called org mode.
 * Recent Notes
-
-We now have shaders and better lighting added. driver.c was rewritten and the
-code is much neater in my opinion. Also, I found out why there were implicit
-declaration warnings and got rid of them with some #defines. Apparently there
-are some standard practices for opengl which require you to do that to avoid
-errors.
+We added in motion blur and texture mapping on top of the other features.
 
 There is a makefile so to run just do this stuff.
 #+BEGIN_SRC python
 Compy:~/Desktop/OpenGL-Bunny[0] make run
-gcc -I/usr/include -I/usr/X11R6/include -L/usr/lib -L/usr/X11R6/lib -L/usr/lib64 -O0 -g -c driver.c -o driver.o
-gcc -I/usr/include -I/usr/X11R6/include -L/usr/lib -L/usr/X11R6/lib -L/usr/lib64 -O0 -g -c parser.c -o parser.o
-gcc -I/usr/include -I/usr/X11R6/include -L/usr/lib -L/usr/X11R6/lib -L/usr/lib64 -O0 -g -c shader.c -o shader.o
-gcc -I/usr/include -I/usr/X11R6/include -L/usr/lib -L/usr/X11R6/lib -L/usr/lib64 -O0 -g -c texturing.c -o texturing.o
-gcc -I/usr/include -I/usr/X11R6/include -L/usr/lib -L/usr/X11R6/lib -L/usr/lib64 -O0 -g -c bunny.c -o bunny.o
-gcc -I/usr/include -I/usr/X11R6/include -L/usr/lib -L/usr/X11R6/lib -L/usr/lib64 -O0 -g -o run driver.o parser.o shader.o texturing.o bunny.o -lX11 -lGL -lGLU -lGLEW -lglut -lm -lXmu -lXi
-./run
-
-Compy:~/Desktop/OpenGL-Bunny[1] make clean
-rm -rf driver.o parser.o shader.o texturing.o bunny.o
-rm -rf run
-
 #+END_SRC
 
 If you want to run multiple times, you can do a plain make and then run separately
 #+BEGIN_SRC python
-acarrab@Compy:~/Desktop/OpenGL-Bunny[2] make
-gcc -I/usr/include -I/usr/X11R6/include -L/usr/lib -L/usr/X11R6/lib -L/usr/lib64 -O0 -g -c driver.c -o driver.o
-gcc -I/usr/include -I/usr/X11R6/include -L/usr/lib -L/usr/X11R6/lib -L/usr/lib64 -O0 -g -c parser.c -o parser.o
-gcc -I/usr/include -I/usr/X11R6/include -L/usr/lib -L/usr/X11R6/lib -L/usr/lib64 -O0 -g -c shader.c -o shader.o
-gcc -I/usr/include -I/usr/X11R6/include -L/usr/lib -L/usr/X11R6/lib -L/usr/lib64 -O0 -g -c texturing.c -o texturing.o
-gcc -I/usr/include -I/usr/X11R6/include -L/usr/lib -L/usr/X11R6/lib -L/usr/lib64 -O0 -g -c bunny.c -o bunny.o
-gcc -I/usr/include -I/usr/X11R6/include -L/usr/lib -L/usr/X11R6/lib -L/usr/lib64 -O0 -g -o run driver.o parser.o shader.o texturing.o bunny.o -lX11 -lGL -lGLU -lGLEW -lglut -lm -lXmu -lXi
-
-acarrab@Compy:~/Desktop/OpenGL-Bunny[3] ./run
+acarrab@Compy:~/Desktop/OpenGL-Bunny[1] make
+acarrab@Compy:~/Desktop/OpenGL-Bunny[2] ./run
 #+END_SRC
 
+You can also make clean
+#+BEGIN_SRC python
+Compy:~/Desktop/OpenGL-Bunny[3] make clean
+#+END_SRC
 * OpenGL-Bunny
 Stanford Bunny with OpenGL
 
 ** Our Todo list
-*** Optional
-    - Motion-blur
 
 ** Our done list
+- Motion-blur
 - Parsing
 - Basic drawStuff layout
 - Maybe apply transform to bunny to rotate to a better viewing angle
